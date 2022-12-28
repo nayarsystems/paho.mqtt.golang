@@ -1,4 +1,4 @@
-module gitlab.com/garagemakers/paho.mqtt.golang.git
+module gitlab.com/garagemakers/paho.mqtt.golang
 
 go 1.14
 
