@@ -380,7 +380,7 @@ func (c *client) attemptConnection() (net.Conn, byte, bool, error) {
 		if c.options.CustomOpenConnectionFn != nil {
 			conn, err = c.options.CustomOpenConnectionFn(broker, c.options)
 		} else {
-			conn, err = openConnection(broker, tlsCfg, c.options.ConnectTimeout, c.options.HTTPHeaders, c.options.WebsocketOptions, dialer)
+			conn, err = openConnection(c.options.Context, broker, tlsCfg, c.options.ConnectTimeout, c.options.HTTPHeaders, c.options.WebsocketOptions, dialer)
 		}
 		if err != nil {
 			ERROR.Println(CLI, err.Error())

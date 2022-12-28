@@ -22,6 +22,7 @@
 package mqtt
 
 import (
+	"context"
 	"crypto/tls"
 	"net"
 	"net/http"
@@ -68,6 +69,7 @@ type OpenConnectionFunc func(uri *url.URL, options ClientOptions) (net.Conn, err
 // to create a configuration with difficult to trace issues (e.g. Mosquitto 2.0.12+ will reject connections
 // with KeepAlive=0 by default).
 type ClientOptions struct {
+	Context                 context.Context
 	Servers                 []*url.URL
 	ClientID                string
 	Username                string
@@ -109,13 +111,14 @@ type ClientOptions struct {
 
 // NewClientOptions will create a new ClientClientOptions type with some
 // default values.
-//   Port: 1883
-//   CleanSession: True
-//   Order: True (note: it is recommended that this be set to FALSE unless order is important)
-//   KeepAlive: 30 (seconds)
-//   ConnectTimeout: 30 (seconds)
-//   MaxReconnectInterval 10 (minutes)
-//   AutoReconnect: True
+//
+//	Port: 1883
+//	CleanSession: True
+//	Order: True (note: it is recommended that this be set to FALSE unless order is important)
+//	KeepAlive: 30 (seconds)
+//	ConnectTimeout: 30 (seconds)
+//	MaxReconnectInterval 10 (minutes)
+//	AutoReconnect: True
 func NewClientOptions() *ClientOptions {
 	o := &ClientOptions{
 		Servers:                 nil,
@@ -450,6 +453,7 @@ func (o *ClientOptions) SetCustomOpenConnectionFn(customOpenConnectionFn OpenCon
 }
 
 // SetAutoAckDisabled enables or disables the Automated Acking of Messages received by the handler.
+//
 //	By default it is set to false. Setting it to true will disable the auto-ack globally.
 func (o *ClientOptions) SetAutoAckDisabled(autoAckDisabled bool) *ClientOptions {
 	o.AutoAckDisabled = autoAckDisabled

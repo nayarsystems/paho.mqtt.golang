@@ -14,6 +14,7 @@
 package mqtt
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"io"
@@ -36,7 +37,7 @@ type WebsocketOptions struct {
 type ProxyFunction func(req *http.Request) (*url.URL, error)
 
 // NewWebsocket returns a new websocket and returns a net.Conn compatible interface using the gorilla/websocket package
-func NewWebsocket(host string, tlsc *tls.Config, timeout time.Duration, requestHeader http.Header, options *WebsocketOptions) (net.Conn, error) {
+func NewWebsocket(ctx context.Context, host string, tlsc *tls.Config, timeout time.Duration, requestHeader http.Header, options *WebsocketOptions) (net.Conn, error) {
 	if timeout == 0 {
 		timeout = 10 * time.Second
 	}
@@ -58,7 +59,7 @@ func NewWebsocket(host string, tlsc *tls.Config, timeout time.Duration, requestH
 		WriteBufferSize:   options.WriteBufferSize,
 	}
 
-	ws, resp, err := dialer.Dial(host, requestHeader)
+	ws, resp, err := dialer.DialContext(ctx, host, requestHeader)
 
 	if err != nil {
 		if resp != nil {
