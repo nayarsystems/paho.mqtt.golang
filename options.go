@@ -152,6 +152,7 @@ func NewClientOptions() *ClientOptions {
 		Dialer:                  &net.Dialer{Timeout: 30 * time.Second},
 		CustomOpenConnectionFn:  nil,
 		AutoAckDisabled:         false,
+		Context:                 context.Background(),
 	}
 	return o
 }
